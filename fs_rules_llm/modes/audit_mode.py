@@ -92,53 +92,6 @@ class AuditMode:
             })
         
         return formatted
-    
-    def print_audit_report(self, report: Dict[str, Any]):
-        """
-        Print formatted audit report.
-        
-        Args:
-            report: Audit report dictionary
-        """
-        print("\n" + "=" * 80)
-        print("AUDIT REPORT")
-        print("=" * 80)
-        print(f"\nQuestion: {report['question']}")
-        print(f"Season: {report['season']}")
-        print(f"Competition: {report['competition']}")
-        print(f"\nChunks Retrieved: {report['chunks_retrieved']}")
-        
-        print("\n" + "-" * 80)
-        print("RETRIEVED CHUNKS:")
-        print("-" * 80)
-        
-        for chunk in report['retrieved_chunks']:
-            print(f"\n[{chunk['rank']}] {chunk['clause_id']} - {chunk['section']}")
-            print(f"    Document: {chunk['document']}")
-            print(f"    Page: {chunk['page']}")
-            print(f"    Words: {chunk['word_count']}")
-            print(f"    Table: {chunk['is_table']}")
-            print(f"    Text: {chunk['text'][:300]}...")
-            print()
-        
-        print("-" * 80)
-        print("ANSWER:")
-        print("-" * 80)
-        print(report['answer'])
-        
-        print("\n" + "-" * 80)
-        print("VALIDATION:")
-        print("-" * 80)
-        print(json.dumps(report['validation'], indent=2))
-        
-        if report['citations']:
-            print("\n" + "-" * 80)
-            print("EXTRACTED CITATIONS:")
-            print("-" * 80)
-            for citation in report['citations']:
-                print(f"  - {citation}")
-        
-        print("\n" + "=" * 80)
 
 
 def run_audit_mode(
@@ -196,12 +149,59 @@ if __name__ == "__main__":
         args.question
     )
     
-    # Print report
-    audit = AuditMode(None)
-    audit.print_audit_report(report)
+    # Print report using static method
+    print_audit_report(report)
     
     # Save to file if requested
     if args.output:
         with open(args.output, 'w') as f:
             json.dump(report, f, indent=2)
         print(f"\nReport saved to: {args.output}")
+
+
+def print_audit_report(report: Dict[str, Any]):
+    """
+    Print formatted audit report.
+    
+    Args:
+        report: Audit report dictionary
+    """
+    print("\n" + "=" * 80)
+    print("AUDIT REPORT")
+    print("=" * 80)
+    print(f"\nQuestion: {report['question']}")
+    print(f"Season: {report['season']}")
+    print(f"Competition: {report['competition']}")
+    print(f"\nChunks Retrieved: {report['chunks_retrieved']}")
+    
+    print("\n" + "-" * 80)
+    print("RETRIEVED CHUNKS:")
+    print("-" * 80)
+    
+    for chunk in report['retrieved_chunks']:
+        print(f"\n[{chunk['rank']}] {chunk['clause_id']} - {chunk['section']}")
+        print(f"    Document: {chunk['document']}")
+        print(f"    Page: {chunk['page']}")
+        print(f"    Words: {chunk['word_count']}")
+        print(f"    Table: {chunk['is_table']}")
+        print(f"    Text: {chunk['text'][:300]}...")
+        print()
+    
+    print("-" * 80)
+    print("ANSWER:")
+    print("-" * 80)
+    print(report['answer'])
+    
+    print("\n" + "-" * 80)
+    print("VALIDATION:")
+    print("-" * 80)
+    print(json.dumps(report['validation'], indent=2))
+    
+    if report['citations']:
+        print("\n" + "-" * 80)
+        print("EXTRACTED CITATIONS:")
+        print("-" * 80)
+        for citation in report['citations']:
+            print(f"  - {citation}")
+    
+    print("\n" + "=" * 80)

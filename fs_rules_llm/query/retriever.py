@@ -111,13 +111,16 @@ class RuleRetriever:
         )
         
         # Apply similarity threshold
-        # Note: For L2 distance, lower is better
-        # Convert L2 distance to similarity-like score for threshold
+        # Note: For L2 distance, lower values indicate more similarity
+        # The threshold is scaled based on embedding characteristics
+        # For 384-dim embeddings, typical relevant chunks have L2 distance < 5.0
+        # Adjust this threshold based on your specific embedding model and data
         filtered_results = []
         for chunk, distance in results:
             # Simple threshold: reject if distance is too high
-            # (You may want to tune this based on your embeddings)
-            if distance <= self.similarity_threshold * 10:  # Scale threshold appropriately
+            # Default threshold of 0.5 * 10 = 5.0 works for most cases
+            # You may need to tune this for your specific use case
+            if distance <= self.similarity_threshold * 10:
                 filtered_results.append((chunk, distance))
         
         # Sanity check: verify retrieved chunks actually contain relevant text

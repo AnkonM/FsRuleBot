@@ -1,13 +1,7 @@
 # Python dependencies for Formula Student Rules Compliance System
 
 # PDF Processing
-PyPDF2>=3.0.0
 pdfplumber>=0.10.0
-pypdf>=3.17.0
-
-# Text Processing
-nltk>=3.8.0
-spacy>=3.7.0
 
 # Vector Storage and Embeddings
 faiss-cpu>=1.7.4
@@ -16,8 +10,6 @@ transformers>=4.35.0
 
 # LLM Integration
 openai>=1.3.0
-langchain>=0.1.0
-langchain-openai>=0.0.2
 
 # Data Processing
 numpy>=1.24.0

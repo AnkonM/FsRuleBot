@@ -242,7 +242,7 @@ def parse_pdf(
     pdf_path: str,
     season: str,
     competition: str
-) -> tuple[List[ParsedSection], Dict[str, Any]]:
+) -> Dict[str, Any]:
     """
     Convenience function to parse a PDF with metadata.
     
@@ -252,7 +252,7 @@ def parse_pdf(
         competition: Competition identifier (e.g., "FSAE")
         
     Returns:
-        Tuple of (parsed sections, metadata dict)
+        Dictionary with 'sections' and 'metadata' keys
     """
     parser = PDFParser(pdf_path)
     sections = parser.parse()
@@ -262,7 +262,10 @@ def parse_pdf(
     metadata['season'] = season
     metadata['competition'] = competition
     
-    return sections, metadata
+    return {
+        'sections': sections,
+        'metadata': metadata
+    }
 
 
 if __name__ == "__main__":
@@ -314,11 +317,13 @@ if __name__ == "__main__":
     
     for pdf_file in pdf_files:
         print(f"\nParsing: {pdf_file.name}")
-        sections, metadata = parse_pdf(
+        result = parse_pdf(
             str(pdf_file),
             args.season,
             args.competition
         )
+        sections = result['sections']
+        metadata = result['metadata']
         print(f"  Extracted {len(sections)} sections")
         print(f"  Pages: {metadata['num_pages']}")
         

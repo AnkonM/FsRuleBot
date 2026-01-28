@@ -139,6 +139,9 @@ class AnswerGenerator:
             
         Returns:
             LLM response text
+            
+        Raises:
+            RuntimeError: If the API call fails
         """
         if self.llm_provider == "openai":
             try:
@@ -152,9 +155,9 @@ class AnswerGenerator:
                 )
                 return response.choices[0].message.content
             except Exception as e:
-                # If API call fails, return error message
-                # In production, you might want to handle this differently
-                return f"Error calling LLM: {str(e)}"
+                # Raise exception for API errors instead of returning error string
+                # This allows calling code to handle errors appropriately
+                raise RuntimeError(f"Error calling LLM API: {str(e)}") from e
         else:
             raise ValueError(f"Unsupported LLM provider: {self.llm_provider}")
     
@@ -273,9 +276,22 @@ class AnswerGenerator:
         Returns:
             List of cited clause IDs
         """
-        # Look for patterns like "T.2.3.1", "A.1.2", etc.
-        citations = re.findall(r'\b([A-Z]{1,3})\.(\d+\.)*\d+\b', answer)
-        return [''.join(c) for c in citations]
+        # Look for Formula Student clause patterns like "T.2.3.1", "A.1.2", "IN.3.4"
+        # Known prefixes: T (Technical), A (Administrative), IN (Inspection), 
+        # EV (Electric Vehicle), IC (Internal Combustion), etc.
+        # Pattern matches 1-3 uppercase letters followed by dot-separated numbers
+        known_prefixes = ['T', 'A', 'IN', 'EV', 'IC', 'D', 'S', 'B', 'F']
+        
+        citations = []
+        # Find all potential clause patterns
+        matches = re.findall(r'\b([A-Z]{1,3})\.(\d+(?:\.\d+)*)\b', answer)
+        
+        # Filter to only known clause prefixes to avoid false positives
+        for prefix, numbers in matches:
+            if prefix in known_prefixes:
+                citations.append(f"{prefix}.{numbers}")
+        
+        return citations
     
     def _extract_options(self, question: str) -> List[str]:
         """
