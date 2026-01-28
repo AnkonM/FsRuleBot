@@ -1,0 +1,69 @@
+# Season and Competition Configuration
+# Defines available Formula Student seasons and competitions
+
+seasons:
+  "2024":
+    description: "Formula Student 2024 Season"
+    competitions:
+      FSAE:
+        full_name: "Formula SAE"
+        region: "North America"
+        organizer: "SAE International"
+        rulebook: "FSAE_Rules_2024.pdf"
+      
+      FS:
+        full_name: "Formula Student"
+        region: "Europe"
+        organizer: "IMechE"
+        rulebook: "FS_Rules_2024.pdf"
+      
+      FSG:
+        full_name: "Formula Student Germany"
+        region: "Germany"
+        organizer: "FSG"
+        rulebook: "FSG_Rules_2024.pdf"
+  
+  "2023":
+    description: "Formula Student 2023 Season"
+    competitions:
+      FSAE:
+        full_name: "Formula SAE"
+        region: "North America"
+        organizer: "SAE International"
+        rulebook: "FSAE_Rules_2023.pdf"
+      
+      FS:
+        full_name: "Formula Student"
+        region: "Europe"
+        organizer: "IMechE"
+        rulebook: "FS_Rules_2023.pdf"
+
+# Default configuration
+default:
+  season: "2024"
+  competition: "FSAE"
+  
+# Embedding configuration
+embeddings:
+  model: "sentence-transformers/all-MiniLM-L6-v2"
+  dimension: 384
+  
+# Chunking configuration
+chunking:
+  min_words: 150
+  max_words: 400
+  overlap_words: 50
+  
+# Retrieval configuration
+retrieval:
+  top_k: 5  # Retrieve top 5-8 chunks
+  max_k: 8
+  similarity_threshold: 0.5
+  
+# LLM configuration
+llm:
+  # For now, supports OpenAI-compatible APIs
+  provider: "openai"
+  model: "gpt-4"
+  temperature: 0.0  # Deterministic for correctness
+  max_tokens: 1000
