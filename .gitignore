@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files (don't commit large files)
+fs_rules_llm/data/raw/**/*.pdf
+fs_rules_llm/data/processed/**/*.json
+fs_rules_llm/data/indices/**/
+
+# Allow keeping directory structure
+!fs_rules_llm/data/raw/.gitkeep
+!fs_rules_llm/data/processed/.gitkeep
+!fs_rules_llm/data/indices/.gitkeep
+
+# Embeddings
+*.npy
+*.pkl
+*.faiss
+
+# Logs
+*.log
+logs/
+
+# API Keys
+.env
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+/tmp/
+*.tmp
